@@ -11,6 +11,8 @@ import React, {
   View
 } from 'react-native';
 
+import NetWorkHelper from './src/util/NetWorkHelper';
+
 class ToBIMMobile extends Component {
   render() {
     return (
