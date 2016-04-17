@@ -19,6 +19,5 @@ function log(){
 }
 
 module.exports = {
-	test:test,
-	log:log
+	log :log
 };
