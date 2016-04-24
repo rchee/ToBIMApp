@@ -11,43 +11,21 @@ import React, {
   View
 } from 'react-native';
 
-import NetWorkHelper from './src/util/NetWorkHelper';
+import NetWorkHelper from './js/common/NetWorkHelper';
+import MessageListComp from './js/comp/MessageListComp';
 
 class ToBIMMobile extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <MessageListComp style={styles.container}/>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    flex: 1
+  }
 });
 
 AppRegistry.registerComponent('ToBIMMobile', () => ToBIMMobile);
