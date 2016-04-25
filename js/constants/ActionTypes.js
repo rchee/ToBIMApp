@@ -1,6 +1,6 @@
 const ActionTypes = {
 
-  ADD_MESSAGE: 'ADD_MESSAGE',
+  NEW_MESSAGE: 'NEW_MESSAGE',
 
 };
 

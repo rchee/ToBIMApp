@@ -2,7 +2,7 @@ import React from 'react-native';
 import './UserAgent';
 import io from 'socket.io-client/socket.io';
 import store from './../store';
-import {addMessage} from '../actions/MessageAct';
+import {newMessage} from '../actions/MessageAct';
 
 var socket = io('http://chee-mini:8080', {
   jsonp: false,
@@ -21,7 +21,9 @@ function log() {
 }
 
 setTimeout(()=> {
-  store.dispatch(addMessage('12a3321'));
+  for (var i = 0; i < 1000; i++) {
+    store.dispatch(newMessage('Message' + (i++)));
+  }
 }, 100);
 
 module.exports = {

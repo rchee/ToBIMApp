@@ -20,7 +20,7 @@ class ListItem extends Component {
         style={styles.listItem}
         underlayColor={'#CCCCCC'}
         onPress={this._onPressButton}>
-        <Text> {this.props.data}</Text>
+        <Text> {this.props.data.msg}</Text>
       </TouchableHighlight>
     );
   }
@@ -33,15 +33,17 @@ class MessageListComp extends Component {
 
   constructor(props) {
     super(props);
-
+    let messages:Array = store.getState().messages.toArray();
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+      dataSource: ds.cloneWithRows(messages),
     };
-
   }
 
   render() {
+    let messages:Array = store.getState().messages.toArray();
+    NetWorkHelper.log(111,JSON.stringify(messages));
+    this.state.dataSource = this.state.dataSource.cloneWithRows(messages);
     return (
       <ListView
         dataSource={this.state.dataSource}

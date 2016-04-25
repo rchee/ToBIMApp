@@ -1,8 +1,8 @@
-import {ADD_MESSAGE} from '../constants/ActionTypes'
+import {NEW_MESSAGE} from '../constants/ActionTypes'
 
-export function addMessage(message) {
+export function newMessage(message) {
   return {
-    type: ADD_MESSAGE,
+    type: NEW_MESSAGE,
     message: message
   };
 }
