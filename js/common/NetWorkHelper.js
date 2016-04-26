@@ -20,11 +20,11 @@ function log() {
   socket.emit('log', {level: 'LOG', arg: Array.prototype.slice.call(arguments)});
 }
 
-setTimeout(()=> {
-  for (var i = 0; i < 1000; i++) {
-    store.dispatch(newMessage('Message' + (i++)));
-  }
-}, 100);
+// setTimeout(()=> {
+// for (var i = 0; i < 100; i++) {
+//   store.dispatch(newMessage('Message' + (i++)));
+// }
+// }, 0);
 
 module.exports = {
   log,

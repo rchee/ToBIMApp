@@ -11,7 +11,7 @@ import React, {
   View
 } from 'react-native';
 
-import NetWorkHelper from './js/common/NetWorkHelper';
+import messageAdapter from './js/netWorkAdapter/messageAdapter';
 import MessageListComp from './js/comp/MessageListComp';
 
 class ToBIMMobile extends Component {
@@ -29,3 +29,4 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('ToBIMMobile', () => ToBIMMobile);
+messageAdapter.init();

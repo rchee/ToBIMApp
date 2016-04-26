@@ -1,19 +1,50 @@
 import {NEW_MESSAGE} from '../constants/ActionTypes';
-import {List} from 'immutable';
+import {List, Map} from 'immutable';
+import  {MessageType} from '../actions/MessageAct';
 
-const initialMessageList = List([{
-  msg: 'aaaa'
-}]);
+type MessageStoreType ={
+  messages:Map<string,MessageType>;//保存了所有消息的Map
+  recentUserList:List;//最近接收到的消息(即每个用户发来的最新那条消息)
+  messageListUserMap:Map<string,List<string>>;//每个用户发来的消息列表，暂时不处理
+};
 
-export default function messageReducer(msgs = initialMessageList, action = undefined) {
+const initMessageStore:MessageStoreType = {
+  messages: Map(),
+  recentUserList: List(),
+  messageListUserMap: Map()
+};
+
+export default function messageReducer(messageStore:MessageStoreType = initMessageStore, action = undefined):MessageStoreType {
   switch (action.type) {
     case NEW_MESSAGE:
-      return msgs.unshift({
-        msg: action.message 
-      });
+    {
+      let msg:MessageType = action.message;
+      var {recentUserList, messages, messageListUserMap} = messageStore;
+
+      var newRecentUserList:List;
+
+      //检查该用户是否出现在recentMessageList中，有则删除
+      var index:number = recentUserList.indexOf(msg.from);
+      if (index >= 0) {
+        recentUserList = recentUserList.splice(index, 1);
+      }
+      newRecentUserList = recentUserList.unshift(msg.from);
+
+      var newMessageListUserMap:Map;
+      var newMessageList:List = messageListUserMap.get(msg.from) || List();
+      newMessageList = newMessageList.unshift(msg.id);
+      newMessageListUserMap = messageListUserMap.set(msg.from, newMessageList);
+
+      return {
+        ...messageStore,
+        messages: messages.set(msg.id, msg),
+        recentUserList: newRecentUserList,
+        messageListUserMap: newMessageListUserMap,
+      };
+    }
 
     default:
-      return msgs;
+      return messageStore;
 
   }
 } 
