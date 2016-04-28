@@ -16,7 +16,7 @@ class ListItem extends Component {
   render() {
     let messages:Map = store.getState().messages.messages;
     let fromId:string = this.props.data;
-    let messageId:string = store.getState().messages.messageListUserMap.get(fromId).get(0);
+    let messageId:string = store.getState().messages.topicListMap.get(fromId).get(0);
     let msg = messages.get(messageId);
 
     return (
@@ -48,7 +48,7 @@ class MessageListComp extends Component {
 
   constructor(props) {
     super(props);
-    let userList:Array = store.getState().messages.recentUserList.toArray();
+    let userList:Array = store.getState().messages.recentTopicList.toArray();
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows(userList),
@@ -56,7 +56,7 @@ class MessageListComp extends Component {
   }
 
   render() {
-    let userList:Array = store.getState().messages.recentUserList.toArray();
+    let userList:Array = store.getState().messages.recentTopicList.toArray();
     this.state.dataSource = this.state.dataSource.cloneWithRows(userList);
     return (
       <ListView
