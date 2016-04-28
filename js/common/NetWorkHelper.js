@@ -4,8 +4,8 @@ import io from 'socket.io-client/socket.io';
 import store from './../store';
 import {newMessage} from '../actions/MessageAct';
 
-var socket = io('http://chee-mini:8080', {
-  jsonp: false,
+var socket = io('http://192.168.199.136:8080', {
+  jsonp     : false,
   transports: ['websocket']
 });
 

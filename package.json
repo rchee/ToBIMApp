@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "run server": "node server/index.js"
   },
   "dependencies": {
     "immutable": "^3.8.1",
@@ -11,6 +12,8 @@
     "react-native": "^0.23.1",
     "react-redux": "^4.4.5",
     "redux": "^3.5.1",
-    "socket.io-client": "^1.4.5"
+    "socket.io-client": "^1.4.5",
+    "mongodb": "^2.1.16",
+    "socket.io": "^1.4.5"
   }
 }
