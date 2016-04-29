@@ -18,12 +18,12 @@ io.on('connection', function (socket) {
 
   setTimeout(function () {
 
-    for (var i = 0; i < 150; i++) {
+    for (var i = 0; i < 10; i++) {
       socket.emit('newMessage', {
         id     : uuid++,
-        message: "Message" + i,//消息内容
+        message: "Message" + (i + 1),//消息内容
         date   : 1,//发送时间
-        from   : ((Math.random() * 20) >> 0),//来自谁（id）
+        from   : ((Math.random() * 5) >> 0),//来自谁（id）
         to     : '000',//发给谁
       });
     }

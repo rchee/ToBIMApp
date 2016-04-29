@@ -1,8 +1,6 @@
 import React from 'react-native';
 import './UserAgent';
 import io from 'socket.io-client/socket.io';
-import store from './../store';
-import {newMessage} from '../actions/MessageAct';
 
 var socket = io('http://192.168.199.136:8080', {
   jsonp     : false,
@@ -19,12 +17,6 @@ function init() {
 function log() {
   socket.emit('log', {level: 'LOG', arg: Array.prototype.slice.call(arguments)});
 }
-
-// setTimeout(()=> {
-// for (var i = 0; i < 100; i++) {
-//   store.dispatch(newMessage('Message' + (i++)));
-// }
-// }, 0);
 
 module.exports = {
   log,
