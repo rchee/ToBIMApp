@@ -10,7 +10,7 @@ import React, {
 
 import {connect, Provider} from 'react-redux';
 
-import store from './../store';
+import store from './../../store';
 
 class ListItem extends Component {
   render() {
@@ -27,7 +27,7 @@ class ListItem extends Component {
         <View style={styles.listItemView}>
           <Image
             style={styles.listItemAvanta}
-            source={require('./img/avanta.png')}/>
+            source={require('./../../common/img/avanta.png')}/>
           <View style={styles.textBox}>
             <View style={styles.topBox}>
               <Text style={styles.nick}>{fromId}</Text>
@@ -44,7 +44,7 @@ class ListItem extends Component {
   }
 }
 
-class MessageListComp extends Component {
+class TopicListComp extends Component {
 
   constructor(props) {
     super(props);
@@ -68,55 +68,55 @@ class MessageListComp extends Component {
 }
 
 var styles = StyleSheet.create({
-  listItem: {
+  listItem      : {
     height: 64
   },
-  listItemView: {
-    flex: 1,
+  listItemView  : {
+    flex         : 1,
     flexDirection: "row",
-    marginLeft: 13
+    marginLeft   : 13
   },
   listItemAvanta: {
-    height: 50,
-    width: 50,
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginRight: 13,
+    height      : 50,
+    width       : 50,
+    alignItems  : 'center',
+    alignSelf   : 'center',
+    marginRight : 13,
     borderRadius: 9999
   },
-  textBox: {
-    flex: 1,
-    flexDirection: "column",
+  textBox       : {
+    flex             : 1,
+    flexDirection    : "column",
     borderBottomColor: '#ccc',
     borderBottomWidth: 0.5
   },
-  topBox: {
-    height: 40,
-    alignItems: 'center',
+  topBox        : {
+    height       : 40,
+    alignItems   : 'center',
     flexDirection: "row"
   },
-  nick: {
+  nick          : {
     fontSize: 16,
-    flex: 1,
-    color: '#000000'
+    flex    : 1,
+    color   : '#000000'
   },
-  date: {
+  date          : {
     marginRight: 12,
-    fontSize: 14
+    fontSize   : 14
   },
-  msg: {
-    flex: 1,
+  msg           : {
+    flex      : 1,
     alignItems: 'center'
   }
 });
 
-MessageListComp = connect(state=>state)(MessageListComp);
+TopicListComp = connect(state=>state)(TopicListComp);
 
 var Wrapper = React.createClass({
   render: function () {
     return (
       <Provider store={store}>
-        <MessageListComp/>
+        <TopicListComp/>
       </Provider>
     )
   }

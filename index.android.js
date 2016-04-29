@@ -12,12 +12,12 @@ import React, {
 } from 'react-native';
 
 import messageAdapter from './js/netWorkAdapter/messageAdapter';
-import MessageListComp from './js/comp/MessageListComp';
+import AioComp from './js/comp/AioComp/AioComp';
 
 class ToBIMMobile extends Component {
   render() {
     return (
-      <MessageListComp style={styles.container}/>
+      <AioComp style={styles.container}/>
     );
   }
 }
