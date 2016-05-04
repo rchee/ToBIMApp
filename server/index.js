@@ -17,17 +17,19 @@ io.on('connection', function (socket) {
     console.log(`[${data.level}]${data.arg}`);
   });
 
-  setTimeout(function () {
-    for (var i = 0; i < 50; i++) {
+  setTimeout(function newMessage() {
+    for (var i = 0; i < 10; i++) {
+      var send = (Math.random() >= 0.5 );
+      var fromId = ((Math.random() * 5) >> 0);
       socket.emit('newMessage', {
         id     : uuid++,
         message: "胡言乱语：" + Mock.Random.cparagraph(1, 4),//消息内容
         date   : Date.now(),//发送时间
-        from   : ((Math.random() * 50) >> 0),//来自谁（id）
-        to     : '000',//发给谁
+        from   : send ? '2000' : fromId,//,//来自谁（id）
+        to     : send ? fromId : '2000',//发给谁
       });
     }
-
+    setTimeout(newMessage, 30000);
 
   }, 100);
 
