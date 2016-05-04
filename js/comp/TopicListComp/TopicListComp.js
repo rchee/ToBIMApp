@@ -11,6 +11,7 @@ import React, {
 import {connect, Provider} from 'react-redux';
 
 import store from './../../store';
+import DateHelper from '../../common/DateHelper';
 
 class ListItem extends Component {
   render() {
@@ -22,7 +23,7 @@ class ListItem extends Component {
     return (
       <TouchableHighlight
         style={styles.listItem}
-        underlayColor={'#CCCCCC'}
+        underlayColor={'#EEE'}
         onPress={this._onPressButton}>
         <View style={styles.listItemView}>
           <Image
@@ -30,10 +31,10 @@ class ListItem extends Component {
             source={require('./../../common/img/avanta.png')}/>
           <View style={styles.textBox}>
             <View style={styles.topBox}>
-              <Text style={styles.nick}>{fromId}</Text>
-              <Text style={styles.date}>{ msg.date}</Text>
+              <Text numberOfLines={1} style={styles.nick}>{fromId}</Text>
+              <Text style={styles.date}>{DateHelper.getDateText(msg.date)}</Text>
             </View>
-            <Text style={styles.msg}>{ msg.message || ""}</Text>
+            <Text numberOfLines={1} style={styles.msg}>{ msg.message || ""}</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -102,7 +103,7 @@ var styles = StyleSheet.create({
   },
   date          : {
     marginRight: 12,
-    fontSize   : 14
+    fontSize   : 12
   },
   msg           : {
     flex      : 1,
