@@ -9,7 +9,8 @@ import React, {
 } from 'react-native';
 
 import {connect, Provider} from 'react-redux';
-import LeftMessageBobbleComp from './LeftMessageBobbleComp'
+import LeftMessageBobbleComp from './MessageBobbleComp'
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 import store from './../../store';
 
@@ -21,7 +22,7 @@ class ListItem extends Component {
     // let msg = messages.get(messageId);
 
     return (
-      <LeftMessageBobbleComp/>
+      <LeftMessageBobbleComp sent={Math.random()>0.5}/>
     );
   }
 }
@@ -42,6 +43,7 @@ class AioComp extends Component {
     this.state.dataSource = this.state.dataSource.cloneWithRows([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
     return (
       <ListView
+        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
         style={styles.listView}
         dataSource={this.state.dataSource}
         renderRow={(rowData) => <ListItem data={rowData}/>}
