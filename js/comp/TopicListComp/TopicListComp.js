@@ -15,16 +15,20 @@ import DateHelper from '../../common/DateHelper';
 
 class ListItem extends Component {
   render() {
-    let messages:Map = store.getState().messages.messages;
+    let messagesStore = store.getState().messages;
+    let messages:Map = messagesStore.messages;
     let fromId:string = this.props.data;
-    let messageId:string = store.getState().messages.messageListUserMap.get(fromId).get(0);
+    let messageId:string = messagesStore.messageListUserMap.get(fromId).get(0);
     let msg = messages.get(messageId);
 
     return (
       <TouchableHighlight
         style={styles.listItem}
         underlayColor={'#EEE'}
-        onPress={this._onPressButton}>
+        onPress={()=>{
+          this.props.navigator.push({name: 'Aio', fromUserId: this.props.data});
+          }
+        }>
         <View style={styles.listItemView}>
           <Image
             style={styles.listItemAvanta}
@@ -42,6 +46,7 @@ class ListItem extends Component {
   }
 
   _onPressButton() {
+    console.warn(this.props);
   }
 }
 
@@ -61,8 +66,9 @@ class TopicListComp extends Component {
     this.state.dataSource = this.state.dataSource.cloneWithRows(userList);
     return (
       <ListView
+        style={this.props.style}   
         dataSource={this.state.dataSource}
-        renderRow={(rowData) => <ListItem data={rowData}/>}
+        renderRow={(rowData) => <ListItem data={rowData} navigator={this.props.navigator} />}
       />
     );
   }
@@ -113,14 +119,14 @@ var styles = StyleSheet.create({
 
 TopicListComp = connect(state=>state)(TopicListComp);
 
-var Wrapper = React.createClass({
-  render: function () {
-    return (
-      <Provider store={store}>
-        <TopicListComp/>
-      </Provider>
-    )
-  }
-});
+// var Wrapper = React.createClass({
+//   render: function () {
+//     return (
+//       <Provider store={store}>
+//         <TopicListComp/>
+//       </Provider>
+//     )
+//   }
+// });
 
-module.exports = Wrapper;
+module.exports = TopicListComp;

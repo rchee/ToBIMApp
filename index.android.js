@@ -1,23 +1,15 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
-
 import React, {
   AppRegistry,
   Component,
   StyleSheet,
-  Text,
-  View
 } from 'react-native';
 
-import messageAdapter from './js/netWorkAdapter/messageAdapter';
-import AioComp from './js/comp/AioComp/AioComp';
+import IMApp from './js/comp/IMApp/IMApp';
 
 class ToBIMMobile extends Component {
   render() {
     return (
-      <AioComp style={styles.container}/>
+      <IMApp/>
     );
   }
 }
@@ -29,4 +21,3 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('ToBIMMobile', () => ToBIMMobile);
-messageAdapter.init();

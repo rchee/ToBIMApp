@@ -16,18 +16,19 @@ import store from './../../store';
 
 class ListItem extends Component {
   render() {
-    // let messages:Map = store.getState().messages.messages;
-    // let fromId:string = this.props.data;
-    // let messageId:string = store.getState().messages.messageListUserMap.get(fromId).get(0);
-    // let msg = messages.get(messageId);
-
+    let messages:Map = store.getState().messages.messages;
+    let msg = messages.get(this.props.data);
     return (
-      <LeftMessageBobbleComp sent={Math.random()>0.5}/>
+      <LeftMessageBobbleComp message={msg} sent={msg.from=='2000'}/>
     );
   }
 }
 
 class AioComp extends Component {
+
+  static defaultProps = {
+    userId: undefined,
+  };
 
   constructor(props) {
     super(props);
@@ -39,8 +40,9 @@ class AioComp extends Component {
   }
 
   render() {
-    let userList:Array = store.getState().messages.recentUserList.toArray();
-    this.state.dataSource = this.state.dataSource.cloneWithRows([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
+    let messageList:Array = store.getState().messages.messageListUserMap.get(this.props.userId);
+    let array = messageList ? messageList.toArray() : [];
+    this.state.dataSource = this.state.dataSource.cloneWithRows(array);
     return (
       <ListView
         renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
@@ -64,7 +66,7 @@ var Wrapper = React.createClass({
   render: function () {
     return (
       <Provider store={store}>
-        <AioComp/>
+        <AioComp userId={this.props.userId}/>
       </Provider>
     )
   }

@@ -35,7 +35,8 @@ class MessageBobbleComp extends Component {
           <View style={[styles.content,this.props.sent?styles.selfContent:styles.empty]}>
             <Text
               style={[styles.contentText,this.props.sent?styles.selfContentText:styles.empty]}>
-              { Mock.Random.cparagraph(1, 4)}</Text>
+              {this.props.message.message || ''}
+            </Text>
           </View>
         </View>
         <View style={{flex:0}}/>
