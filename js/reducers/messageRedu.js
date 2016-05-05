@@ -4,14 +4,14 @@ import  {MessageType} from '../actions/MessageAct';
 
 type MessageStoreType ={
   messages:Map<string,MessageType>;//保存了所有消息的Map
-  recentTopicList:List;//最近接收到的消息(即每个用户发来的最新那条消息)
-  topicListMap:Map<string,List<string>>;//每个用户发来的消息列表，暂时不处理
+  recentUserList:List;//最近接收到的消息(即每个用户发来的最新那条消息)
+  messageListUserMap:Map<string,List<string>>;//每个用户发来的消息列表，暂时不处理
 };
 
 const initMessageStore:MessageStoreType = {
-  messages: Map(),
-  recentTopicList: List(),
-  topicListMap: Map()
+  messages          : Map(),
+  recentUserList    : List(),
+  messageListUserMap: Map()
 };
 
 export default function messageReducer(messageStore:MessageStoreType = initMessageStore, action = undefined):MessageStoreType {
@@ -19,24 +19,29 @@ export default function messageReducer(messageStore:MessageStoreType = initMessa
     case NEW_MESSAGE:
     {
       let msg:MessageType = action.message;
-      var {recentTopicList, messages, topicListMap} = messageStore;
+      let topicUserId = msg.from == '2000' ? msg.to : msg.from;
+
+      var {recentUserList, messages, messageListUserMap} = messageStore;
+
+      var newRecentUserList:List;
 
       //检查该用户是否出现在recentMessageList中，有则删除
-      var index:number = recentTopicList.indexOf(msg.from);
+      var index:number = recentUserList.indexOf(topicUserId);
       if (index >= 0) {
-        recentTopicList = recentTopicList.splice(index, 1);
+        recentUserList = recentUserList.splice(index, 1);
       }
-      recentTopicList = recentTopicList.unshift(msg.from);
+      newRecentUserList = recentUserList.unshift(topicUserId);
 
-      var newMessageList:List = topicListMap.get(msg.from) || List();
+      var newMessageListUserMap:Map;
+
+      var newMessageList:List = messageListUserMap.get(topicUserId) || List();
       newMessageList = newMessageList.unshift(msg.id);
-      topicListMap = topicListMap.set(msg.from, newMessageList);
-
+      newMessageListUserMap = messageListUserMap.set(topicUserId, newMessageList);
       return {
         ...messageStore,
-        messages: messages.set(msg.id, msg),
-        recentTopicList,
-        topicListMap,
+        messages          : messages.set(msg.id, msg),
+        recentUserList    : newRecentUserList,
+        messageListUserMap: newMessageListUserMap,
       };
     }
 

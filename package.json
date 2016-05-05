@@ -3,14 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "run packager": "node node_modules/react-native/local-cli/cli.js start",
+    "run server": "node server/index.js"
   },
   "dependencies": {
     "immutable": "^3.8.1",
+    "mockjs": "^1.0.1-beta2",
+    "mongodb": "^2.1.16",
     "react": "^0.14.8",
     "react-native": "^0.23.1",
+    "react-native-invertible-scroll-view": "^1.0.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.1",
+    "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5"
   }
 }
