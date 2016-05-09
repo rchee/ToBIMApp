@@ -15,7 +15,7 @@ import LeftMessageBobbleComp from "./MessageBobbleComp";
 import InvertibleScrollView from "react-native-invertible-scroll-view";
 import {sentMessage} from "../../actions/MessageAct";
 import store from "./../../store";
-
+var KeyboardSpacer = require('react-native-keyboard-spacer');
 var uuid = require('../../common/uuid/uuid.js');
 
 var Mock = require('mockjs');
