@@ -15,10 +15,17 @@ console.log("server start.");
 io.on('connection', function (socket) {
 
   var userId = '';
+  var loginKey = '';
 
   socket.on('login', function (data, cb) {
     console.log(JSON.stringify(data, 2));
-    cb();
+    userId = uuid.v4();
+    loginKey = uuid.v4();
+    cb({
+      userId  : userId,
+      loginKey: loginKey,
+      state   : 'success'
+    });
   });
 
   socket.on('log', function (data) {
@@ -26,14 +33,20 @@ io.on('connection', function (socket) {
   });
 
   socket.on('sendMessage', function (msg, cb) {
+    if (loginKey == '') {
+      socket.disconnect();
+      return;
+    }
     console.log(JSON.stringify(msg, 2));
     cb();
   });
 
 
   setTimeout(function newMessage() {
+    setTimeout(newMessage, 30000);
+    if (userId == '')return;
     for (var i = 0; i < 10; i++) {
-      var send = (Math.random() >= 0.5 );
+      var send = false;
       var fromId = ((Math.random() * 5) >> 0);
       socket.emit('newMessage', {
         id     : uuid.v1(),
@@ -43,8 +56,6 @@ io.on('connection', function (socket) {
         to     : send ? fromId : userId,//发给谁
       });
     }
-    setTimeout(newMessage, 30000);
-
   }, 100);
 
 });

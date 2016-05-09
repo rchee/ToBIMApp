@@ -29,7 +29,7 @@ export default function loginReducer(loginState:loginState = initLoginState, act
         case  'failed':
           return {
             loginState: 'failed',
-            msg       : '登录失败'
+            msg       : action.msg || '登录失败'
           };
 
         case  'offline':

@@ -5,10 +5,12 @@ import React, {
   Text,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
   View,
   Image
 } from 'react-native';
-
+import store from './../../store';
+import {loginAct} from '../../actions/LoginAct'
 
 class LoginComp extends Component {
 
@@ -19,21 +21,40 @@ class LoginComp extends Component {
   }
 
   render() {
+    let disable = store.getState().login.state == 'checking';
     return (
       <View style={[this.props.style,styles.main]}>
         <TextInput
           style={styles.input}
+          editable={!disable}
+          onChangeText={(uname)=>this._uname=uname}
           placeholder={"用户名"}/>
         <TextInput
+          editable={!disable}
           style={styles.input}
+          onChangeText={(pws)=>this._psw=pws}
           placeholder={"密码"}/>
         <TouchableOpacity
+          onPress={this._onLogin}
           style={styles.loginBtn}>
           <Text
             style={styles.loginBtnText}>{"登录"}</Text>
         </TouchableOpacity>
       </View>
     );
+  }
+
+  _onLogin = ()=> {
+    let {_uname, _psw}=this;
+    if (_uname === undefined || _psw === undefined) {
+      ToastAndroid.show('请输入完整信息',ToastAndroid.SHORT);
+      return;
+    }
+    if (_uname === '' || _psw === '') {
+      ToastAndroid.show('请输入完整信息',ToastAndroid.SHORT);
+      return;
+    }
+    store.dispatch(loginAct(_uname, _psw));
   }
 }
 

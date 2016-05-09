@@ -16,6 +16,21 @@ import TopicList from './../TopicListComp/TopicListComp';
 import Login from "../LoginComp/LoginComp";
 import store from './../../store';
 
+function getInitRoute(loginSuccess:boolean = false) {
+  if (loginSuccess) {
+    return {
+      title: '企业IM',
+      name : 'index',
+      data : 'messageTab'
+    }
+  } else {
+    return {
+      title: '用户登录',
+      name : 'login'
+    }
+  }
+
+}
 
 class NavBar extends Component {
 
@@ -28,6 +43,10 @@ class NavBar extends Component {
     this.state = {
       title: '企业IM',
     };
+  }
+
+  immediatelyRefresh() {
+    //谜之回调           
   }
 
   render() {
@@ -66,12 +85,12 @@ class IMApp extends Component {
 
 
   render() {
+    var initRoute = getInitRoute(store.getState().login.state === 'success');
     return (
       <Provider store={store}>
         <Navigator
           ref={(navigator) => {this._navigator = navigator;}}
-          // initialRoute={{title:'企业IM',name:'index',data:'messageTab'}}
-          initialRoute={{title:'用户登录',name:'login'}}
+          initialRoute={initRoute}
           renderScene={this.renderScene}
           onWillFocus={this._willFocus}
           navigationBar={
@@ -83,7 +102,6 @@ class IMApp extends Component {
       </Provider>
     );
   }
-
 
   renderScene = (route:object, navigator) => {
     switch (route.name) {
@@ -108,14 +126,30 @@ class IMApp extends Component {
     }
   }
 
+  unsub:undefined;
+
+  componentDidMount() {
+    //TODO 这里也许有更好的写法
+    unsub = store.subscribe(()=> {
+      let nav = this._navigator;
+      let routers = nav.getCurrentRoutes();
+      if (routers[0].name == 'login' && store.getState().login.loginState === 'success') {
+        let route = getInitRoute(true);
+        nav.immediatelyResetRouteStack([route]);
+        this.setState({title: route.title});
+      }
+    });
+  }
+
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       BackAndroid.removeEventListener('hardwareBackPress', this.onBack);
     }
+
+    unsub && unsub();
   }
 
   _willFocus = (route)=> {
-    console.log(route.title);
     this.setState({title: route.title});
   };
 
