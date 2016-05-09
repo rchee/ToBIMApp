@@ -50,9 +50,8 @@ var styles = StyleSheet.create({
   loginBtn    : {
     backgroundColor: '#12b7f5',
     alignItems     : 'center',
-    margin         : 4,
+    margin         : 10,
     borderRadius   : 4,
-    paddingTop     : 10,
   },
   loginBtnText: {
     width         : 50,
