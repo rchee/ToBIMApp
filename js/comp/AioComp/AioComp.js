@@ -4,15 +4,21 @@ import React, {
   ListView,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
+  TextInput,
   View,
   Image
-} from 'react-native';
+} from "react-native";
+import {connect, Provider} from "react-redux";
+import LeftMessageBobbleComp from "./MessageBobbleComp";
+import InvertibleScrollView from "react-native-invertible-scroll-view";
+import {sentMessage} from "../../actions/MessageAct";
+import store from "./../../store";
 
-import {connect, Provider} from 'react-redux';
-import LeftMessageBobbleComp from './MessageBobbleComp'
-import InvertibleScrollView from 'react-native-invertible-scroll-view';
+var uuid = require('../../common/uuid/uuid.js');
 
-import store from './../../store';
+var Mock = require('mockjs');
+
 
 class ListItem extends Component {
   render() {
@@ -35,7 +41,8 @@ class AioComp extends Component {
     let userList:Array = store.getState().messages.recentUserList.toArray();
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(['111', '2222']),
+      dataSource: ds.cloneWithRows([]),
+      inputText : ''
     };
   }
 
@@ -44,20 +51,84 @@ class AioComp extends Component {
     let array = messageList ? messageList.toArray() : [];
     this.state.dataSource = this.state.dataSource.cloneWithRows(array);
     return (
-      <ListView
-        renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-        style={styles.listView}
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) => <ListItem data={rowData}/>}
-      />
+      <View style={[styles.aio,this.props.style]}>
+        <ListView
+          renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+          style={styles.listView}
+          dataSource={this.state.dataSource}
+          renderRow={(rowData) => <ListItem data={rowData}/>}
+        />
+        <View style={styles.inputWrap}>
+          <TextInput
+            onChangeText={(text) => this.setState({inputText:text})}
+            style={styles.input}
+            onSubmitEditing={this._onSend}
+            value={this.state.inputText}
+            returnKeyType={'send'}
+          />
+          <TouchableOpacity
+            onPress={this._onSend}
+            style={styles.sendBtn}>
+            <View style={styles.sendBtnTextWarp}>
+              <Text
+                style={styles.sendBtnText}>{'发送'}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
     );
+  }
+
+  _onSend = ()=> {
+
+    let text = this.state.inputText;
+    if (text === "") {
+      return;
+    }
+
+    store.dispatch(sentMessage(text, this.props.userId));
+
+    this.setState({inputText: ''});
   }
 }
 
 var styles = StyleSheet.create({
-  listView: {
-    backgroundColor: '#EEE',
+  aio            : {
+    flex: 1
   },
+  listView       : {
+    backgroundColor: '#EEE',
+    flex           : 1,
+  },
+  inputWrap      : {
+    height         : 50,
+    backgroundColor: '#fff',
+    flexDirection  : 'row',
+  },
+  input          : {
+    flex: 1
+  },
+  sendBtn        : {
+    backgroundColor: '#12b7f5',
+    // alignSelf      : 'center',
+    alignItems     : 'center',
+    margin         : 4,
+    borderRadius   : 4,
+    // flex: 1
+  },
+  sendBtnTextWarp: {
+    alignSelf     : 'center',
+    alignItems    : 'center',
+    justifyContent: 'center'
+  },
+  sendBtnText    : {
+    width         : 50,
+    justifyContent: 'center',
+    alignSelf     : 'center',
+    alignItems    : 'center',
+    textAlign     : 'center',
+    color         : '#fff'
+  }
 });
 
 AioComp = connect(state=>state)(AioComp);

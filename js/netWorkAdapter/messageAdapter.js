@@ -3,11 +3,12 @@ import {newMessage} from '../actions/MessageAct';
 import store from '../store';
 
 
-
-function init() {
+export function init() {
   NetWorkHelper.socket.on('newMessage', (msg:MessageType)=> {
     store.dispatch(newMessage(msg));
   });
 }
 
-module.exports = {init};
+export function sendMessage(msg, callback) {
+  NetWorkHelper.socket.emit('sendMessage', msg, callback);
+}
