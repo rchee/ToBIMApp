@@ -15,7 +15,9 @@
     "react-native-invertible-scroll-view": "^1.0.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.1",
+    "redux-thunk": "^2.0.1",
     "socket.io": "^1.4.5",
-    "socket.io-client": "^1.4.5"
+    "socket.io-client": "^1.4.5",
+    "uuid": "^2.0.2"
   }
 }

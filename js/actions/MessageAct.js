@@ -1,4 +1,6 @@
-import {NEW_MESSAGE} from '../constants/ActionTypes'
+import {NEW_MESSAGE, SENT_MESSAGE} from '../constants/ActionTypes'
+import {sendMessage} from '../netWorkAdapter/messageAdapter'
+var uuid = require('../common/uuid/uuid.js');
 
 //@flow
 export type MessageType = {
@@ -17,7 +19,22 @@ type MessageAction = {
 
 export function newMessage(message:MessageType):MessageAction {
   return {
-    type: NEW_MESSAGE,
+    type   : NEW_MESSAGE,
     message: message
   };
+}
+
+export function sentMessage(content:string, to:string):Function {
+  let msg = {
+    id     : uuid.v1(),
+    message: content,//消息内容
+    date   : Date.now(),//发送时间
+    from   : '2000',//来自谁（id）
+    to     : to,//发给谁
+  };
+
+  return function (dispatch, getState) {
+    sendMessage(msg, ()=> dispatch(newMessage(msg)))
+  };
+
 }
