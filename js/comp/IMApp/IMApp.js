@@ -10,9 +10,10 @@ import React, {
 } from 'react-native';
 import {connect, Provider} from 'react-redux';
 
-import messageAdapter from './../../netWorkAdapter/messageAdapter';
+import {init} from './../../netWorkAdapter/messageAdapter';
 import AioComp from './../AioComp/AioComp';
 import TopicList from './../TopicListComp/TopicListComp';
+import Login from "../LoginComp/LoginComp";
 import store from './../../store';
 
 
@@ -73,7 +74,8 @@ class IMApp extends Component {
       <Provider store={store}>
         <Navigator
           ref={(navigator) => {this._navigator = navigator;}}
-          initialRoute={{title:'企业IM',name:'index',data:'messageTab'}}
+          // initialRoute={{title:'企业IM',name:'index',data:'messageTab'}}
+          initialRoute={{title:'用户登录',name:'login'}}
           renderScene={this.renderScene}
           navigationBar={
           <NavBar onBack={this.onBack}/>
@@ -85,6 +87,10 @@ class IMApp extends Component {
 
   renderScene(route:object, navigator) {
     switch (route.name) {
+      case 'login':
+      {
+        return <Login style={styles.scene} navigator={navigator}/>
+      }
       case 'index':
       {
         return <TopicList style={styles.scene} navigator={navigator}/>
@@ -155,4 +161,4 @@ TopicListComp = connect(state=>state)(IMApp);
 
 
 module.exports = IMApp;
-messageAdapter.init();
+init();
