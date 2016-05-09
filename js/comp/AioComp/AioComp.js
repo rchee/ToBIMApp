@@ -9,6 +9,7 @@ import React, {
   View,
   Image
 } from "react-native";
+
 import {connect, Provider} from "react-redux";
 import LeftMessageBobbleComp from "./MessageBobbleComp";
 import InvertibleScrollView from "react-native-invertible-scroll-view";
@@ -133,14 +134,4 @@ var styles = StyleSheet.create({
 
 AioComp = connect(state=>state)(AioComp);
 
-var Wrapper = React.createClass({
-  render: function () {
-    return (
-      <Provider store={store}>
-        <AioComp userId={this.props.userId}/>
-      </Provider>
-    )
-  }
-});
-
-module.exports = Wrapper;
+module.exports = AioComp;
