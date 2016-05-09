@@ -31,7 +31,7 @@ class NavBar extends Component {
   }
 
   render() {
-    var title = this.state.title || "企业IM";
+    var title = this.props.title || "企业IM";
     var nav = this.props.navigator.getCurrentRoutes();
     var leftBtn = nav.length > 1 ? (
       <TouchableOpacity
@@ -57,17 +57,13 @@ class NavBar extends Component {
 
 class IMApp extends Component {
 
-  componentWillMount() {
-    if (Platform.OS === 'android') {
-      BackAndroid.addEventListener('hardwareBackPress', this.onBack);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '企业IM',
+    };
   }
 
-  componentWillUnmount() {
-    if (Platform.OS === 'android') {
-      BackAndroid.removeEventListener('hardwareBackPress', this.onBack);
-    }
-  }
 
   render() {
     return (
@@ -77,15 +73,19 @@ class IMApp extends Component {
           // initialRoute={{title:'企业IM',name:'index',data:'messageTab'}}
           initialRoute={{title:'用户登录',name:'login'}}
           renderScene={this.renderScene}
+          onWillFocus={this._willFocus}
           navigationBar={
-          <NavBar onBack={this.onBack}/>
+          <NavBar
+            onBack={this.onBack}
+            title={this.state.title}/>
         }
         />
       </Provider>
     );
   }
 
-  renderScene(route:object, navigator) {
+
+  renderScene = (route:object, navigator) => {
     switch (route.name) {
       case 'login':
       {
@@ -100,7 +100,24 @@ class IMApp extends Component {
         return <AioComp style={styles.scene} navigator={navigator} userId={route.fromUserId} route={route}/>
       }
     }
+  };
+
+  componentWillMount() {
+    if (Platform.OS === 'android') {
+      BackAndroid.addEventListener('hardwareBackPress', this.onBack);
+    }
   }
+
+  componentWillUnmount() {
+    if (Platform.OS === 'android') {
+      BackAndroid.removeEventListener('hardwareBackPress', this.onBack);
+    }
+  }
+
+  _willFocus = (route)=> {
+    console.log(route.title);
+    this.setState({title: route.title});
+  };
 
   onBack = () => {
     const nav = this._navigator;
