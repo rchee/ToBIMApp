@@ -72,7 +72,7 @@ var styles = StyleSheet.create({
   },
   input       : {
     width: 300,
-    height:20,
+    height:50,
   },
   loginBtn    : {
     backgroundColor: '#12b7f5',
