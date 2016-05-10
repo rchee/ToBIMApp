@@ -4,13 +4,15 @@ import React, {
   ListView,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableOpacity,Platform,
   ToastAndroid,
   View,
   Image
 } from 'react-native';
 import store from './../../store';
 import {loginAct} from '../../actions/LoginAct'
+import KeyboardSpacer from'react-native-keyboard-spacer';
+
 
 class LoginComp extends Component {
 
@@ -23,6 +25,7 @@ class LoginComp extends Component {
   render() {
     let disable = store.getState().login.state == 'checking';
     return (
+      <View style={{flex:1}}>
       <View style={[this.props.style,styles.main]}>
         <TextInput
           style={styles.input}
@@ -41,6 +44,8 @@ class LoginComp extends Component {
             style={styles.loginBtnText}>{"登录"}</Text>
         </TouchableOpacity>
       </View>
+        {(Platform.OS === 'ios')?<KeyboardSpacer/>:null}
+       </View>
     );
   }
 
@@ -66,7 +71,8 @@ var styles = StyleSheet.create({
     paddingTop    : -200,
   },
   input       : {
-    width: 300
+    width: 300,
+    height:20,
   },
   loginBtn    : {
     backgroundColor: '#12b7f5',

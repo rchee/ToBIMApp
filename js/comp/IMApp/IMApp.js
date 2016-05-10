@@ -164,6 +164,8 @@ class IMApp extends Component {
   };
 }
 
+let topSpace = (Platform.OS === 'ios') ? 16 : 0;
+
 var styles = StyleSheet.create({
   navBar           : {
     position       : 'absolute',
@@ -172,7 +174,8 @@ var styles = StyleSheet.create({
     height         : 45,
     top            : 0,
     left           : 0,
-    right          : 0
+    right          : 0,
+    paddingTop     : topSpace,
   },
   navBarText       : {
     fontSize: 18,
@@ -204,7 +207,7 @@ var styles = StyleSheet.create({
   },
   scene            : {
     flex     : 1,
-    marginTop: 45,
+    marginTop: 45 + topSpace,
   },
 });
 

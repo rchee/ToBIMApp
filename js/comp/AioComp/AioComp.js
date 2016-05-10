@@ -6,6 +6,7 @@ import React, {
   TouchableHighlight,
   TouchableOpacity,
   TextInput,
+  Platform,
   View,
   Image
 } from "react-native";
@@ -15,7 +16,7 @@ import LeftMessageBobbleComp from "./MessageBobbleComp";
 import InvertibleScrollView from "react-native-invertible-scroll-view";
 import {sentMessage} from "../../actions/MessageAct";
 import store from "./../../store";
-var KeyboardSpacer = require('react-native-keyboard-spacer');
+import KeyboardSpacer from'react-native-keyboard-spacer';
 var uuid = require('../../common/uuid/uuid.js');
 
 var Mock = require('mockjs');
@@ -76,6 +77,7 @@ class AioComp extends Component {
             </View>
           </TouchableOpacity>
         </View>
+        {(Platform.OS === 'ios')?<KeyboardSpacer/>:null}
       </View>
     );
   }
