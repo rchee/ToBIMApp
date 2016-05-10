@@ -90,7 +90,7 @@ var styles = StyleSheet.create({
     alignItems  : 'center',
     alignSelf   : 'center',
     marginRight : 13,
-    borderRadius: 9999
+    borderRadius: 25
   },
   textBox       : {
     flex             : 1,
