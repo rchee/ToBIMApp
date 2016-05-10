@@ -32,6 +32,7 @@ class ListItem extends Component {
         <View style={styles.listItemView}>
           <Image
             style={styles.listItemAvanta}
+            resizeMode={'cover'} 
             source={require('./../../common/img/avanta.png')}/>
           <View style={styles.textBox}>
             <View style={styles.topBox}>

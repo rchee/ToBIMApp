@@ -25,6 +25,7 @@ class MessageBobbleComp extends Component {
       <View style={[styles.messageView,this.props.sent?styles.horizontallyInverted:styles.empty]}>
         <Image
           style={[styles.avanta,this.props.sent?styles.horizontallyInverted:styles.empty]}
+          resizeMode={'cover'}
           source={require('./../../common/img/avanta.png')}/>
         <Image
           style={[styles.arrow,this.props.sent?styles.selfArrow:styles.empty]}
@@ -62,10 +63,8 @@ var styles = StyleSheet.create({
   avanta              : {
     height      : 40,
     width       : 40,
-    // alignItems  : 'center',
-    // alignSelf   : 'center',
     marginRight : 10,
-    borderRadius: 9999
+    borderRadius: 20
   },
   arrow               : {
     position: 'absolute',
