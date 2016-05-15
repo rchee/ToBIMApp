@@ -1,6 +1,14 @@
 var app = require('http').createServer(handler).listen(8080);
-var io = require('socket.io')(app)
+var io = require('socket.io')(app);
 var Mock = require('mockjs');
+var DB_CONN_STR = 'mongodb://localhost:27017/to_b_im';
+var Promise = require('bluebird');
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+var Collection = mongodb.Collection;
+
+Promise.promisifyAll(Collection.prototype);
+Promise.promisifyAll(MongoClient);
 
 var uuid = require('uuid');
 
@@ -39,12 +47,38 @@ io.on('connection', function (socket) {
 
   socket.on('login', function (data, cb) {
     console.log(JSON.stringify(data, 2));
-    userId = uuid.v4();
-    loginKey = uuid.v4();
-    cb({
-      userId  : userId,
-      loginKey: loginKey,
-      state   : 'success'
+    MongoClient.connect(DB_CONN_STR, function (err, db) {
+      db.collection("users").find({user: data.username, pwd: data.psw}).toArray()
+        .then(function (docs) {
+          console.log(docs);
+          if (docs.length > 0) {
+            return docs[0];
+          } else {
+            return Promise.reject(new Error("用户名密码错误"));
+          }
+        })
+        .then(function (user) {
+          loginKey = uuid.v4();
+          userId = user._id;
+          return db.collection('users').update(user, {$set: {loginKey: loginKey}});
+        })
+        .then(function () {
+          cb({
+            userId,
+            loginKey,
+            state: 'success'
+          });
+        })
+        .catch(function (err) {
+          console.error(err);
+          cb({
+            msg  : err.message,
+            state: 'fail'
+          });
+        })
+        .finally(function () {
+          db.close();
+        });
     });
   });
 
@@ -78,6 +112,11 @@ io.on('connection', function (socket) {
 
     cb(result);
   });
+
+  socket.on('getFriends', function (userId, cb) {
+
+  });
+
 
   setTimeout(function newMessage() {
     setTimeout(newMessage, Math.random() * 10 * 1000 + 1000);
