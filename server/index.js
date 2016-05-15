@@ -12,7 +12,7 @@ Promise.promisifyAll(MongoClient);
 
 var uuid = require('uuid');
 
-var randomUserCount = 20;
+var randomUserCount = 5;
 
 var userIdList = [];
 for (var i = 0; i < randomUserCount; i++) {
