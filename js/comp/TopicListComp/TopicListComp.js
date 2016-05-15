@@ -70,7 +70,7 @@ class TopicListComp extends Component {
     this.state.dataSource = this.state.dataSource.cloneWithRows(userList);
     return (
       <ListView
-        style={this.props.style}
+        style={[this.props.style,{flex:1}]}
         dataSource={this.state.dataSource}
         renderRow={(rowData) => <ListItem data={rowData} navigator={this.props.navigator} />}
       />

@@ -6,6 +6,7 @@ import React, {
   BackAndroid,
   Platform,
   TouchableOpacity,
+  ToastAndroid,
   View
 } from 'react-native';
 import {connect, Provider} from 'react-redux';
@@ -13,7 +14,7 @@ import {connect, Provider} from 'react-redux';
 import {initMessage} from './../../netWorkAdapter/messageAdapter';
 import {initLogin} from './../../netWorkAdapter/loginAdapter';
 
-
+import TabView from './TabView';
 import AioComp from './../AioComp/AioComp';
 import TopicList from './../TopicListComp/TopicListComp';
 import Login from "../LoginComp/LoginComp";
@@ -24,7 +25,7 @@ function getInitRoute(loginSuccess:boolean = false) {
     return {
       title: '企业IM',
       name : 'index',
-      data : 'messageTab'
+      tab  : 'message'
     }
   } else {
     return {
@@ -114,7 +115,27 @@ class IMApp extends Component {
       }
       case 'index':
       {
-        return <TopicList style={styles.scene} navigator={navigator}/>
+        let inTabView = null;
+        switch (route.tab) {
+          case 'message':
+            inTabView = (<TopicList style={styles.scene} navigator={navigator}/>);
+            break;
+          case 'org':
+            inTabView = null;
+            break;
+          case 'about':
+            inTabView = null;
+            break;
+        }
+        return (
+          <View style={styles.tabWarp}>
+            <View style={{flex:1}}>
+              {inTabView}
+            </View>
+            <TabView
+              currentTab={route.tab}
+              onSwitch={this._onSwitchTab}/>
+          </View>)
       }
       case 'Aio':
       {
@@ -122,6 +143,16 @@ class IMApp extends Component {
       }
     }
   };
+
+  _onSwitchTab = (tab)=> {
+    let nav = this._navigator;
+    nav.replace({
+      title: '企业IM',
+      name : 'index',
+      tab
+    });
+    this.setState({title: '企业IM'});
+  }
 
   componentWillMount() {
     if (Platform.OS === 'android') {
@@ -142,6 +173,7 @@ class IMApp extends Component {
         nav.immediatelyResetRouteStack([route]);
         this.setState({title: route.title});
       } else if (loginState === 'offline') {
+        ToastAndroid.show('您已下线，请重新登录', ToastAndroid.LONG);
         let route = getInitRoute(false);
         nav.immediatelyResetRouteStack([route]);
         this.setState({title: route.title});
@@ -177,7 +209,7 @@ let topSpace = (Platform.OS === 'ios') ? 16 : 0;
 var styles = StyleSheet.create({
   navBar           : {
     position       : 'absolute',
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     flexDirection  : "row",
     height         : 45,
     top            : 0,
@@ -217,6 +249,11 @@ var styles = StyleSheet.create({
     flex     : 1,
     marginTop: 45 + topSpace,
   },
+  tabWarp          : {
+    flex           : 1,
+    flexDirection  : 'column',
+    backgroundColor: '#f8f8f8'
+  }
 });
 
 TopicListComp = connect(state=>state)(IMApp);
