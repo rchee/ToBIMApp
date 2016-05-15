@@ -3,7 +3,7 @@ import {newMessageReceive} from '../actions/MessageAct';
 import store from '../store';
 
 
-export function init() {
+export function initMessage() {
   NetWorkHelper.socket.on('newMessage', (msg:MessageType)=> {
     store.dispatch(newMessageReceive(msg));
   });

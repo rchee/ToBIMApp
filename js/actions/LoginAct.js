@@ -26,6 +26,15 @@ export function loginFail(msg) {
   }
 }
 
+export function logoutByServer(msg) {
+  console.warn(msg);
+  return {
+    type : LOGIN_STATE_CHANGE,
+    state: 'offline',
+    msg,
+  }
+}
+
 export function loginAct(username:string, pws:string) {
 
   return function (dispatch, getState) {

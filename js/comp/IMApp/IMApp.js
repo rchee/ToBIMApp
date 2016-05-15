@@ -10,7 +10,10 @@ import React, {
 } from 'react-native';
 import {connect, Provider} from 'react-redux';
 
-import {init} from './../../netWorkAdapter/messageAdapter';
+import {initMessage} from './../../netWorkAdapter/messageAdapter';
+import {initLogin} from './../../netWorkAdapter/loginAdapter';
+
+
 import AioComp from './../AioComp/AioComp';
 import TopicList from './../TopicListComp/TopicListComp';
 import Login from "../LoginComp/LoginComp";
@@ -133,8 +136,13 @@ class IMApp extends Component {
     unsub = store.subscribe(()=> {
       let nav = this._navigator;
       let routers = nav.getCurrentRoutes();
-      if (routers[0].name == 'login' && store.getState().login.loginState === 'success') {
+      let loginState = store.getState().login.loginState;
+      if (routers[0].name == 'login' && loginState === 'success') {
         let route = getInitRoute(true);
+        nav.immediatelyResetRouteStack([route]);
+        this.setState({title: route.title});
+      } else if (loginState === 'offline') {
+        let route = getInitRoute(false);
         nav.immediatelyResetRouteStack([route]);
         this.setState({title: route.title});
       }
@@ -214,5 +222,7 @@ var styles = StyleSheet.create({
 TopicListComp = connect(state=>state)(IMApp);
 
 
+initMessage();
+initLogin();
+
 module.exports = IMApp;
-init();
