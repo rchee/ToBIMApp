@@ -16,11 +16,14 @@ import DateHelper from '../../common/DateHelper';
 class ListItem extends Component {
   render() {
     let messagesStore = store.getState().messages;
+    let userStore = store.getState().users;
+
     let messages:Map = messagesStore.messages;
     let fromId:string = this.props.data;
     let messageId:string = messagesStore.messageListUserMap.get(fromId).get(0);
     let msg = messages.get(messageId);
-
+    let user = userStore.users.get(fromId);
+    let displayName = (user && user.name ) || fromId;
     return (
       <TouchableHighlight
         style={styles.listItem}
@@ -32,11 +35,11 @@ class ListItem extends Component {
         <View style={styles.listItemView}>
           <Image
             style={styles.listItemAvanta}
-            resizeMode={'cover'} 
+            resizeMode={'cover'}
             source={require('./../../common/img/avanta.png')}/>
           <View style={styles.textBox}>
             <View style={styles.topBox}>
-              <Text numberOfLines={1} style={styles.nick}>{fromId}</Text>
+              <Text numberOfLines={1} style={styles.nick}>{displayName}</Text>
               <Text style={styles.date}>{DateHelper.getDateText(msg.date)}</Text>
             </View>
             <Text numberOfLines={1} style={styles.msg}>{ msg.message || ""}</Text>
@@ -67,7 +70,7 @@ class TopicListComp extends Component {
     this.state.dataSource = this.state.dataSource.cloneWithRows(userList);
     return (
       <ListView
-        style={this.props.style}   
+        style={this.props.style}
         dataSource={this.state.dataSource}
         renderRow={(rowData) => <ListItem data={rowData} navigator={this.props.navigator} />}
       />

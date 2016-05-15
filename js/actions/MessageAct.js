@@ -1,5 +1,6 @@
 import {NEW_MESSAGE, SENT_MESSAGE} from '../constants/ActionTypes'
 import {sendMessage} from '../netWorkAdapter/messageAdapter'
+import {getUserData} from './UserAct'
 var uuid = require('../common/uuid/uuid.js');
 
 //@flow
@@ -21,6 +22,14 @@ export function newMessage(message:MessageType):MessageAction {
   return {
     type   : NEW_MESSAGE,
     message: message
+  };
+}
+
+export function newMessageReceive(message:MessageType):MessageAction {
+  return function (dispatch) {
+    let {from, to} = message;
+    dispatch(newMessage(message));
+    dispatch(getUserData([from, to]));
   };
 }
 

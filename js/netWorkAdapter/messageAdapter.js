@@ -1,11 +1,11 @@
 import NetWorkHelper from '../common/NetWorkHelper';
-import {newMessage} from '../actions/MessageAct';
+import {newMessageReceive} from '../actions/MessageAct';
 import store from '../store';
 
 
 export function init() {
   NetWorkHelper.socket.on('newMessage', (msg:MessageType)=> {
-    store.dispatch(newMessage(msg));
+    store.dispatch(newMessageReceive(msg));
   });
 }
 

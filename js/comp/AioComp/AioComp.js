@@ -24,10 +24,22 @@ var Mock = require('mockjs');
 
 class ListItem extends Component {
   render() {
+
+
+    //消息内容
     let messages:Map = store.getState().messages.messages;
     let msg = messages.get(this.props.data);
+    let sent = msg.from == '2000';
+
+
+    //用户名
+    let userStore = store.getState().users;
+    let userId = sent ? msg.to : msg.from;
+    let user = userStore.users.get(userId);
+    let nick = (user && user.name) || userId;
+
     return (
-      <LeftMessageBobbleComp message={msg} sent={msg.from=='2000'}/>
+      <LeftMessageBobbleComp message={msg} sent={sent} nick={nick}/>
     );
   }
 }
@@ -77,7 +89,7 @@ class AioComp extends Component {
             </View>
           </TouchableOpacity>
         </View>
-        {(Platform.OS === 'ios')?<KeyboardSpacer/>:null}
+        {(Platform.OS === 'ios') ? <KeyboardSpacer/> : null}
       </View>
     );
   }

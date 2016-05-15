@@ -41,6 +41,25 @@ io.on('connection', function (socket) {
     cb();
   });
 
+  //用户名
+  socket.on('getUserById', function (userId, cb) {
+    if (loginKey == '') {
+      socket.disconnect();
+      return;
+    }
+    console.log(JSON.stringify(userId, 2));
+
+    if (!userId.length) {//todo is array
+      userId = [userId];
+    }
+
+    cb(userId.map(function (index, userId) {
+      return {
+        userId,
+        name: Mock.Random.cname()
+      }
+    }));
+  });
 
   setTimeout(function newMessage() {
     setTimeout(newMessage, 30000);
