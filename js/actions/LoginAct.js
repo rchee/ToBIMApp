@@ -27,7 +27,6 @@ export function loginFail(msg) {
 }
 
 export function logoutByServer(msg) {
-  console.warn(msg);
   return {
     type : LOGIN_STATE_CHANGE,
     state: 'offline',
