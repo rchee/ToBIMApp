@@ -62,14 +62,14 @@ io.on('connection', function (socket) {
   });
 
   setTimeout(function newMessage() {
-    setTimeout(newMessage, 30000);
+    setTimeout(newMessage, 3000);
     if (userId == '')return;
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 5; i++) {
       var send = false;
       var fromId = ((Math.random() * 5) >> 0);
       socket.emit('newMessage', {
         id     : uuid.v1(),
-        message: "胡言乱语：" + Mock.Random.cparagraph(1, 4),//消息内容
+        message: "测试：" + Mock.Random.cparagraph(1, 4),//消息内容
         date   : Date.now(),//发送时间
         from   : send ? userId : fromId,//,//来自谁（id）
         to     : send ? fromId : userId,//发给谁
