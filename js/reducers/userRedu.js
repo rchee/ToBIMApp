@@ -19,7 +19,6 @@ export default function userReducer(userState:UserStoreType = initUserStore, act
         users = users.set(userObj.userId, userObj);
         return userObj;
       });
-      console.warn(JSON.stringify(action.userInfo), users.toObject());
       return {
         ...userState,
         users

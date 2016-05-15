@@ -32,7 +32,6 @@ export function getUserData(userIdArray:array<string>):Function {
 
   return function (dispatch:Function) {
     getUserInfo(userIdArray, function (userInfo) {
-      // console.warn(111, JSON.stringify(userInfo));
       dispatch(updateUser(userInfo));
     });
   };
