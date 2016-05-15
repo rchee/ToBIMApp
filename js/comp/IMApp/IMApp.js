@@ -169,6 +169,7 @@ class IMApp extends Component {
       let routers = nav.getCurrentRoutes();
       let loginState = store.getState().login.loginState;
       if (routers[0].name == 'login' && loginState === 'success') {
+        ToastAndroid.show('登录成功', ToastAndroid.LONG);
         let route = getInitRoute(true);
         nav.immediatelyResetRouteStack([route]);
         this.setState({title: route.title});
