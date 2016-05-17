@@ -47,39 +47,40 @@ io.on('connection', function (socket) {
 
   socket.on('login', function (data, cb) {
     console.log(JSON.stringify(data, 2));
-    MongoClient.connect(DB_CONN_STR, function (err, db) {
-      db.collection("users").find({user: data.username, pwd: data.psw}).toArray()
-        .then(function (docs) {
-          console.log(docs);
-          if (docs.length > 0) {
-            return docs[0];
-          } else {
-            return Promise.reject(new Error("用户名密码错误"));
-          }
-        })
-        .then(function (user) {
-          loginKey = uuid.v4();
-          userId = user._id;
-          return db.collection('users').update(user, {$set: {loginKey: loginKey}});
-        })
-        .then(function () {
-          cb({
-            userId,
-            loginKey,
-            state: 'success'
-          });
-        })
-        .catch(function (err) {
-          console.error(err);
-          cb({
-            msg  : err.message,
-            state: 'fail'
-          });
-        })
-        .finally(function () {
-          db.close();
+    //TODO 这里为了能在 .then() 中使用 db 而采用了类似全局变量的写法，不知道还有没有更加美观的写法。
+    let db;
+    MongoClient.connect(DB_CONN_STR)
+      .then(function (_db) {
+        db = _db;
+        return db.collection("users").find({user: data.username, pwd: data.psw}).toArray();
+      })
+      .then(function (docs) {
+        console.log(docs);
+        if (docs.length > 0) {
+          return docs[0];
+        } else {
+          return Promise.reject(new Error("用户名密码错误"));
+        }
+      })
+      .then(function (user) {
+        loginKey = uuid.v4();
+        userId = user._id;
+        return db.collection('users').update(user, {$set: {loginKey: loginKey}});
+      })
+      .then(function () {
+        cb({
+          userId,
+          loginKey,
+          state: 'success'
         });
-    });
+      })
+      .catch(function (err) {
+        console.error(err);
+        cb({
+          msg  : err.message,
+          state: 'fail'
+        });
+      })
   });
 
   socket.on('log', function (data) {
@@ -93,7 +94,7 @@ io.on('connection', function (socket) {
     cb();
   });
 
-  //用户名
+//用户名
   socket.on('getUserById', function (userId, cb) {
     if (!loginCheck()) return;
 

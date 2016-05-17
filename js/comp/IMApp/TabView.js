@@ -17,7 +17,10 @@ class TabView extends Component {
       {name: 'message', title: '消息'},
       {name: 'org', title: '组织架构'},
       {name: 'about', title: '关于'}].map((ele)=>
-      <TouchableOpacity style={styles.btn} onPress={()=>this.props.onSwitch(ele.name)}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={()=>this.props.onSwitch(ele.name)}
+        key={ele.name}>
         <Text style={this.props.currentTab==ele.name?styles.textActive:{}}>{ele.title}</Text>
       </TouchableOpacity>
     );
