@@ -12,6 +12,8 @@ import {connect, Provider} from 'react-redux';
 
 import store from './../../store';
 import DateHelper from '../../common/DateHelper';
+import {getUserData} from './../../actions/UserAct';
+
 
 class ListItem extends Component {
   render() {
@@ -23,7 +25,13 @@ class ListItem extends Component {
     let messageId:string = messagesStore.messageListUserMap.get(fromId).get(0);
     let msg = messages.get(messageId);
     let user = userStore.users.get(fromId);
-    let displayName = (user && user.name ) || fromId;
+    let displayName
+    if (user && user.name) {
+      displayName = user.name;
+    } else {
+      displayName = fromId;
+      store.dispatch(getUserData([fromId]));
+    }
     return (
       <TouchableHighlight
         style={styles.listItem}
