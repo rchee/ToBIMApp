@@ -15,7 +15,7 @@ class TabView extends Component {
 
     let TabArray = [
       {name: 'message', title: '消息'},
-      {name: 'org', title: '组织架构'},
+      {name: 'contact', title: '联系人'},
       {name: 'about', title: '关于'}].map((ele)=>
       <TouchableOpacity
         style={styles.btn}

@@ -7,13 +7,14 @@ var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var Collection = mongodb.Collection;
 var ObjectID = mongodb.ObjectID;
+var pinyin = require("node-pinyin");
 
 Promise.promisifyAll(Collection.prototype);
 Promise.promisifyAll(MongoClient);
 
 var uuid = require('uuid');
 
-var randomUserCount = 5;
+var randomUserCount = 500;
 
 var userIdList = [];
 for (var i = 0; i < randomUserCount; i++) {
@@ -138,9 +139,14 @@ io.on('connection', function (socket) {
       userId = [userId];
     }
     var result = userId.map(function (userId) {
+      let cname = Mock.Random.cname();
+
       return {
         userId,
-        name: Mock.Random.cname()
+        name  : cname,
+        pinyin: JSON.stringify(pinyin(cname, {
+          style: 'normal'
+        }))
       }
     });
     console.log('getUserById', JSON.stringify(result, 2));

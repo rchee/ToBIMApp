@@ -17,6 +17,7 @@ import {initLogin} from './../../netWorkAdapter/loginAdapter';
 import TabView from './TabView';
 import AioComp from './../AioComp/AioComp';
 import TopicList from './../TopicListComp/TopicListComp';
+import Contact from './../ContactComp/ContactComp';
 import Login from "../LoginComp/LoginComp";
 import store from './../../store';
 
@@ -120,8 +121,8 @@ class IMApp extends Component {
           case 'message':
             inTabView = (<TopicList style={styles.scene} navigator={navigator}/>);
             break;
-          case 'org':
-            inTabView = null;
+          case 'contact':
+            inTabView = (<Contact style={styles.scene} navigator={navigator}/>);
             break;
           case 'about':
             inTabView = null;
