@@ -6,6 +6,7 @@ var Promise = require('bluebird');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var Collection = mongodb.Collection;
+var ObjectID = mongodb.ObjectID;
 
 Promise.promisifyAll(Collection.prototype);
 Promise.promisifyAll(MongoClient);
@@ -81,6 +82,39 @@ io.on('connection', function (socket) {
           state: 'fail'
         });
       })
+  });
+
+  socket.on('reLogin', function (data, cb) {
+    console.log(JSON.stringify(data, 2));
+    let _db;
+    MongoClient.connect(DB_CONN_STR)
+      .then(function (_db) {
+        db = _db;
+        return db.collection("users").find({_id: ObjectID(data.userId), loginKey: data.loginKey}).toArray();
+      })
+      .then(function (row) {
+        if (row.length > 0) {
+          return row[0];
+        } else {
+          return Promise.reject(new Error("登录态过期"));
+        }
+      })
+      .then(function (user) {
+        userId = data.userId;
+        loginKey = data.loginKey;
+        cb({
+          userId,
+          loginKey,
+          state: 'success'
+        });
+      })
+      .catch(function (err) {
+        console.error(err);
+        cb({
+          msg  : err.message,
+          state: 'fail'
+        });
+      });
   });
 
   socket.on('log', function (data) {

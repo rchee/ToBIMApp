@@ -8,7 +8,6 @@ var socket = io('http://192.168.199.136:8080', {
 });
 
 function init() {
-  socket.on('concen',()=>{});
 }
 
 /**

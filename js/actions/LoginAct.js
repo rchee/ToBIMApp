@@ -1,11 +1,20 @@
 import {LOGIN_STATE_CHANGE} from '../constants/ActionTypes'
-import {login} from '../netWorkAdapter/loginAdapter'
+import {login, reLogin} from '../netWorkAdapter/loginAdapter'
 
 
 export function loginStart() {
   return {
     type : LOGIN_STATE_CHANGE,
     state: 'checking'
+  }
+}
+
+export function reLoginStart(userId, loginKey) {
+  return {
+    userId,
+    loginKey,
+    type : LOGIN_STATE_CHANGE,
+    state: 'reLogin'
   }
 }
 
@@ -31,6 +40,30 @@ export function logoutByServer(msg) {
     type : LOGIN_STATE_CHANGE,
     state: 'offline',
     msg,
+  }
+}
+
+/**
+ * 断线后重新登录
+ * @returns {*}
+ */
+export function reLoginAct() {
+  return function (dispatch, getState) {
+    let {loginKey, userId, loginState}=  getState().login;
+    if (loginKey && userId) {
+      dispatch(reLoginStart(userId, loginKey));
+      reLogin(userId, loginKey)
+        .then(function (data) {
+          dispatch(loginSuccess(data));
+        }, function (data) {
+          dispatch(loginFail(data.msg));
+        });
+    } else {
+      dispatch({
+        type : LOGIN_STATE_CHANGE,
+        state: 'offline',
+      });
+    }
   }
 }
 

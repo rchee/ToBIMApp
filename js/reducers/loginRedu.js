@@ -3,7 +3,7 @@ import {LOGIN_STATE_CHANGE} from '../constants/ActionTypes';
 type loginState = {
   userId:?string,
   loginKey:?string,
-  loginState:'unlogin'|'checking'|'success'|'failed'|'offline',
+  loginState:'unlogin'|'checking'|'success'|'failed'|'offline'|'reLogin',
   msg:''
 }
 
@@ -18,6 +18,7 @@ export default function loginReducer(loginState:loginState = initLoginState, act
 
       switch (action.state) {
         case'success' ://登录成功
+        {
           let {userId, loginKey} = action.data;
           return {
             userId,
@@ -25,7 +26,17 @@ export default function loginReducer(loginState:loginState = initLoginState, act
             loginState: 'success',
             msg       : '登录成功'
           };
-
+        }
+        case 'reLogin':
+        {
+          let {userId, loginKey} = action;
+          return {
+            userId,
+            loginKey,
+            loginState: 'reLogin',
+            msg       : '重新登录中'
+          };
+        }
         case  'failed':
           return {
             loginState: 'failed',
@@ -43,7 +54,6 @@ export default function loginReducer(loginState:loginState = initLoginState, act
             loginState: 'checking',
             msg       : '登录中...'
           };
-
       }
 
 
