@@ -36,7 +36,7 @@ class ListItem extends Component {
           <Image
             style={styles.listItemAvanta}
             resizeMode={'cover'}
-            source={require('./../../common/img/avanta.png')}/>
+            source={{uri: `http://avatar.chsword.net/avatar/${this.props.data}`}}/>
           <View style={styles.textBox}>
             <View style={styles.topBox}>
               <Text numberOfLines={1} style={styles.nick}>{displayName}</Text>

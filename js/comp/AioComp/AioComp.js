@@ -39,7 +39,7 @@ class ListItem extends Component {
     let nick = (user && user.name) || userId;
 
     return (
-      <LeftMessageBobbleComp message={msg} sent={sent} nick={nick}/>
+      <LeftMessageBobbleComp message={msg} sent={sent} nick={nick} userId={userId}/>
     );
   }
 }

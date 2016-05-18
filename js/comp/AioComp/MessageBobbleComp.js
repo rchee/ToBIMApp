@@ -28,7 +28,7 @@ class MessageBobbleComp extends Component {
         <Image
           style={[styles.avanta,this.props.sent?styles.horizontallyInverted:styles.empty]}
           resizeMode={'cover'}
-          source={require('./../../common/img/avanta.png')}/>
+          source={{uri: `http://avatar.chsword.net/avatar/${this.props.userId}`}}/>
         <Image
           style={[styles.arrow,this.props.sent?styles.selfArrow:styles.empty]}
           source={this.props.sent?require('./img/arrow-send.png'):require('./img/arrow.png')}
