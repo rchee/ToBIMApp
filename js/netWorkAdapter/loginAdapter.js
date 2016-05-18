@@ -21,6 +21,9 @@ export function reLogin(userId:string, loginKey:string) {
 }
 
 export function initLogin() {
+
+  setTimeout(()=>store.dispatch(reLoginAct()), 500);
+
   socket.on('connect', ()=> {
     store.dispatch(reLoginAct());
   });
