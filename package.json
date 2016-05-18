@@ -17,6 +17,8 @@
     "react-native-keyboard-spacer": "^0.1.6",
     "react-redux": "^4.4.5",
     "redux": "^3.5.1",
+    "redux-persist": "^3.1.1",
+    "redux-persist-transform-immutable": "^3.1.0",
     "redux-thunk": "^2.0.1",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
