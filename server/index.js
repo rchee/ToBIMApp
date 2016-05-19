@@ -14,12 +14,21 @@ Promise.promisifyAll(MongoClient);
 
 var uuid = require('uuid');
 
-var randomUserCount = 500;
-
 var userIdList = [];
-for (var i = 0; i < randomUserCount; i++) {
-  userIdList.push(uuid.v4());
+
+function initUserIdList() {
+  MongoClient.connect(DB_CONN_STR)
+    .then(_db=> {
+      return _db.collection("users").find({}).toArray();
+    })
+    .then(users => {
+      userIdList = users.map(user=>user._id);
+    })
+    .catch(e=>console.error(e))
+    .then(()=> console.log(JSON.stringify(userIdList)));
 }
+
+initUserIdList();
 
 //非常简单的 handler
 function handler(req, res) {
@@ -128,30 +137,31 @@ io.on('connection', function (socket) {
     console.log(JSON.stringify(msg, 2));
     cb();
   });
-
-//用户名
+  
+  //用户名
   socket.on('getUserById', function (userId, cb) {
     if (!loginCheck()) return;
-
     console.log(JSON.stringify(userId, 2));
 
-    if (!userId.length) {//todo is array
-      userId = [userId];
-    }
-    var result = userId.map(function (userId) {
-      let cname = Mock.Random.cname();
-
-      return {
-        userId,
-        name  : cname,
-        pinyin: JSON.stringify(pinyin(cname, {
-          style: 'normal'
-        }))
-      }
-    });
-    console.log('getUserById', JSON.stringify(result, 2));
-
-    cb(result);
+    MongoClient.connect(DB_CONN_STR)
+      .then(_db => {
+        return Promise.all(userId.map(_id => {
+          return _db.collection("users").find({_id: ObjectID(_id)}).toArray();
+        }));
+      })
+      .then(users => {
+        let result = users.map(userList => {
+          let user = userList[0];
+          return {
+            userId: user._id,
+            name  : user.name,
+            pinyin: user.pinyin
+          }
+        });
+        cb(result);
+        console.log('getUserById', JSON.stringify(result, 2));
+      })
+      .catch(e => console.log(e));
   });
 
   socket.on('getFriends', function (userId, cb) {
@@ -164,7 +174,7 @@ io.on('connection', function (socket) {
     if (userId == '')return;
     for (var i = 0; i < 1; i++) {
       var send = false;
-      var fromId = userIdList[((Math.random() * randomUserCount) >> 0)];
+      var fromId = userIdList[((Math.random() * userIdList.length) >> 0)];
       socket.emit('newMessage', {
         id     : uuid.v1(),
         message: "测试：" + Mock.Random.cparagraph(1, 4),//消息内容
