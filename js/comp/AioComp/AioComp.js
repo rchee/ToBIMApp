@@ -35,7 +35,7 @@ class ListItem extends Component {
 
     //用户名
     let userStore = store.getState().users;
-    let userId = msg.from;//sent ? msg.to : msg.from;
+    let userId = msg.from;
     let user = userStore.users.get(userId);
     let nick = (user && user.name) || userId;
 
