@@ -29,12 +29,13 @@ class ListItem extends Component {
     //消息内容
     let messages:Map = store.getState().messages.messages;
     let msg = messages.get(this.props.data);
-    let sent = msg.from == '2000';
+    let currUserId = store.getState().login.userId;
+    let sent = msg.from == currUserId;
 
 
     //用户名
     let userStore = store.getState().users;
-    let userId = sent ? msg.to : msg.from;
+    let userId = msg.from;//sent ? msg.to : msg.from;
     let user = userStore.users.get(userId);
     let nick = (user && user.name) || userId;
 

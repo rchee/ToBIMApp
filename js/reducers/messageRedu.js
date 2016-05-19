@@ -1,6 +1,7 @@
 import {NEW_MESSAGE} from '../constants/ActionTypes';
 import {List, Map} from 'immutable';
 import  {MessageType} from '../actions/MessageAct';
+import store from './../store'
 
 type MessageStoreType ={
   messages:Map<string,MessageType>;//保存了所有消息的Map
@@ -19,7 +20,7 @@ export default function messageReducer(messageStore:MessageStoreType = initMessa
     case NEW_MESSAGE:
     {
       let msg:MessageType = action.message;
-      let topicUserId = msg.from == '2000' ? msg.to : msg.from;
+      let topicUserId = msg.from == store.getState().login.userId ? msg.to : msg.from;
 
       var {recentUserList, messages, messageListUserMap} = messageStore;
 

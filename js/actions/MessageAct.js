@@ -1,6 +1,8 @@
 import {NEW_MESSAGE, SENT_MESSAGE} from '../constants/ActionTypes'
 import {sendMessage} from '../netWorkAdapter/messageAdapter'
 import {getUserData} from './UserAct'
+import store from './../store'
+
 var uuid = require('../common/uuid/uuid.js');
 
 //@flow
@@ -38,7 +40,7 @@ export function sentMessage(content:string, to:string):Function {
     id     : uuid.v1(),
     message: content,//消息内容
     date   : Date.now(),//发送时间
-    from   : '2000',//来自谁（id）
+    from   : store.getState().login.userId,//来自谁（id）
     to     : to,//发给谁
   };
 

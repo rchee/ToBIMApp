@@ -33,7 +33,7 @@ class MessageBobbleComp extends Component {
           style={[styles.arrow,this.props.sent?styles.selfArrow:styles.empty]}
           source={this.props.sent?require('./img/arrow-send.png'):require('./img/arrow.png')}
         />
-        <Text style={styles.nick}>{this.props.sent ? this.props.nick : ''}</Text>
+        <Text style={styles.nick}>{this.props.sent ? '' : this.props.nick}</Text>
         <View style={styles.contentWarp}>
           <View style={[styles.content,this.props.sent?styles.selfContent:styles.empty]}>
             <Text
