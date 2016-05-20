@@ -2,7 +2,9 @@ import React from 'react-native';
 import './UserAgent';
 import io from 'socket.io-client/socket.io';
 
-var socket = io('http://192.168.199.136:8080', {
+var SERVER_ADD = 'http://192.168.199.136:8080';
+
+var socket = io(SERVER_ADD, {
   jsonp     : false,
   transports: ['websocket']
 });
@@ -19,5 +21,6 @@ function log() {
 
 module.exports = {
   log,
-  socket
+  socket,
+  SERVER_ADD
 };
