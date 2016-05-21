@@ -17,6 +17,7 @@ import InvertibleScrollView from "react-native-invertible-scroll-view";
 import {sentMessage} from "../../actions/MessageAct";
 import store from "./../../store";
 import KeyboardSpacer from'react-native-keyboard-spacer';
+import ExpressionChooser from './ExpressionChooser/ExpressionChooser';
 var uuid = require('../../common/uuid/uuid.js');
 
 var Mock = require('mockjs');
@@ -56,8 +57,9 @@ class AioComp extends Component {
     let userList:Array = store.getState().messages.recentUserList.toArray();
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([]),
-      inputText : ''
+      dataSource           : ds.cloneWithRows([]),
+      inputText            : '',
+      showExpressionChooser: false
     };
   }
 
@@ -76,11 +78,24 @@ class AioComp extends Component {
         <View style={styles.inputWrap}>
           <TextInput
             onChangeText={(text) => this.setState({inputText:text})}
+            ref={(input) => {this._input = input;}}
             style={styles.input}
             onSubmitEditing={this._onSend}
             value={this.state.inputText}
+            onFocus={()=>this.setState({showExpressionChooser:false})}
             returnKeyType={'send'}
           />
+          <TouchableOpacity
+            onPress={()=>{
+              this._input.blur();
+              this.setState({showExpressionChooser:true});
+            }}
+            style={styles.sendBtn}>
+            <View style={styles.sendBtnTextWarp}>
+              <Text
+                style={styles.sendBtnText}>{'表情'}</Text>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={this._onSend}
             style={styles.sendBtn}>
@@ -91,6 +106,7 @@ class AioComp extends Component {
           </TouchableOpacity>
         </View>
         {(Platform.OS === 'ios') ? <KeyboardSpacer/> : null}
+        {this.state.showExpressionChooser ? <ExpressionChooser/> : null}
       </View>
     );
   }
@@ -125,11 +141,13 @@ var styles = StyleSheet.create({
     flex: 1
   },
   sendBtn        : {
-    backgroundColor: '#12b7f5',
-    // alignSelf      : 'center',
-    alignItems     : 'center',
-    margin         : 4,
-    borderRadius   : 4,
+    backgroundColor : '#12b7f5',
+    alignSelf       : 'center',
+    alignItems      : 'center',
+    padding         : 10,
+    marginHorizontal: 4,
+
+    borderRadius: 4,
     // flex: 1
   },
   sendBtnTextWarp: {
@@ -138,7 +156,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   },
   sendBtnText    : {
-    width         : 50,
+    // width         : 50,
     justifyContent: 'center',
     alignSelf     : 'center',
     alignItems    : 'center',
