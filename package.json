@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "bluebird": "^3.3.5",
+    "express": "^4.13.4",
     "immutable": "^3.8.1",
     "mockjs": "^1.0.1-beta2",
     "mongodb": "^2.1.16",
