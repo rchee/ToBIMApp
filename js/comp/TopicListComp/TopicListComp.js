@@ -42,7 +42,7 @@ class ListItem extends Component {
         }>
         <View style={styles.listItemView}>
           <Image
-            style={styles.listItemAvanta}
+            style={styles.listItemAvatar}
             resizeMode={'cover'}
             source={{uri: `http://avatar.chsword.net/avatar/${this.props.data}`}}/>
           <View style={styles.textBox}>
@@ -95,7 +95,7 @@ var styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft   : 13
   },
-  listItemAvanta: {
+  listItemAvatar: {
     height      : 50,
     width       : 50,
     alignItems  : 'center',

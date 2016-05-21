@@ -26,7 +26,7 @@ class MessageBobbleComp extends Component {
     return (
       <View style={[styles.messageView,this.props.sent?styles.horizontallyInverted:styles.empty]}>
         <Image
-          style={[styles.avanta,this.props.sent?styles.horizontallyInverted:styles.empty]}
+          style={[styles.avatar,this.props.sent?styles.horizontallyInverted:styles.empty]}
           resizeMode={'cover'}
           source={{uri: `http://avatar.chsword.net/avatar/${this.props.userId}`}}/>
         <Image
@@ -62,7 +62,7 @@ var styles = StyleSheet.create({
     paddingLeft  : 10,
     paddingRight : 20,
   },
-  avanta              : {
+  avatar              : {
     height      : 40,
     width       : 40,
     marginRight : 10,
