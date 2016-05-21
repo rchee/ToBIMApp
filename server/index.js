@@ -1,5 +1,11 @@
-var app = require('http').createServer(handler).listen(8080);
-var io = require('socket.io')(app);
+var http = require('http');
+var express = require('express');
+var app = express();
+app.use("/public", express.static(__dirname + '/public'));
+var expressApp = http.createServer(app).listen(8080, function () {
+  console.log("server start.");
+});
+var io = require('socket.io')(expressApp);
 var Mock = require('mockjs');
 var DB_CONN_STR = 'mongodb://localhost:27017/to_b_im';
 var Promise = require('bluebird');
@@ -29,14 +35,6 @@ function initUserIdList() {
 }
 
 initUserIdList();
-
-//非常简单的 handler
-function handler(req, res) {
-  res.writeHead(404);
-  res.end("Not found");
-}
-
-console.log("server start.");
 
 io.on('connection', function (socket) {
 
@@ -137,7 +135,7 @@ io.on('connection', function (socket) {
     console.log(JSON.stringify(msg, 2));
     cb();
   });
-  
+
   //用户名
   socket.on('getUserById', function (userId, cb) {
     if (!loginCheck()) return;
