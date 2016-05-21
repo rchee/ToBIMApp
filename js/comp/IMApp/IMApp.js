@@ -221,6 +221,7 @@ var styles = StyleSheet.create({
   },
   navBarText       : {
     fontSize: 18,
+    flex    : 1
   },
   navBarTitle      : {
     flex      : 1,
@@ -234,12 +235,12 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems   : 'flex-start',
     height       : 45,
-    width        : 150,
+    width        : 80,
     paddingLeft  : 9,
   },
   navBarRightButton: {
     height: 45,
-    width : 150,
+    width : 80,
   },
   navBarButtonText : {
     color         : '#5890FF',
