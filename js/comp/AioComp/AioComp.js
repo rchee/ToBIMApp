@@ -87,13 +87,17 @@ class AioComp extends Component {
           />
           <TouchableOpacity
             onPress={()=>{
+              let sEC = this.state.showExpressionChooser;
               this._input.blur();
-              this.setState({showExpressionChooser:true});
+              this.setState({showExpressionChooser:!sEC});
+              if(sEC){
+                this._input.focus();
+              }
             }}
             style={styles.sendBtn}>
             <View style={styles.sendBtnTextWarp}>
               <Text
-                style={styles.sendBtnText}>{'表情'}</Text>
+                style={styles.sendBtnText}>{this.state.showExpressionChooser ? '键盘' : '表情'}</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -106,7 +110,7 @@ class AioComp extends Component {
           </TouchableOpacity>
         </View>
         {(Platform.OS === 'ios') ? <KeyboardSpacer/> : null}
-        {this.state.showExpressionChooser ? <ExpressionChooser/> : null}
+        {this.state.showExpressionChooser ? <ExpressionChooser sendExp={this._onSendExp}/> : null}
       </View>
     );
   }
@@ -121,7 +125,13 @@ class AioComp extends Component {
     store.dispatch(sentMessage(text, this.props.userId));
 
     this.setState({inputText: ''});
-  }
+  };
+
+  _onSendExp = (expId:number)=> {
+    store.dispatch(sentMessage(expId, this.props.userId, 'exp'));
+    this.setState({showExpressionChooser: false});
+    this._input.focus();
+  };
 }
 
 var styles = StyleSheet.create({

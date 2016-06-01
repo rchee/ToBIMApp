@@ -175,6 +175,7 @@ io.on('connection', function (socket) {
       var fromId = userIdList[((Math.random() * userIdList.length) >> 0)];
       socket.emit('newMessage', {
         id     : uuid.v1(),
+        type   : 'text',
         message: "测试：" + Mock.Random.cparagraph(1, 4),//消息内容
         date   : Date.now(),//发送时间
         from   : send ? userId : fromId,//,//来自谁（id）

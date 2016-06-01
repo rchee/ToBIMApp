@@ -50,11 +50,23 @@ class ListItem extends Component {
               <Text numberOfLines={1} style={styles.nick}>{displayName}</Text>
               <Text style={styles.date}>{DateHelper.getDateText(msg.date)}</Text>
             </View>
-            <Text numberOfLines={1} style={styles.msg}>{ msg.message || ""}</Text>
+            <Text numberOfLines={1} style={styles.msg}>{ this._getMsg(msg)}</Text>
           </View>
         </View>
       </TouchableHighlight>
     );
+  }
+
+  _getMsg(msg) {
+    switch (msg.type) {
+      case undefined://fix 最初没有类别的消息
+      case 'text':
+        return msg.message || "";
+      case 'exp':
+        return '[表情符号]';
+      default :
+        return '暂不支持显示此消息';
+    }
   }
 
   _onPressButton() {

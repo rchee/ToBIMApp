@@ -35,9 +35,10 @@ export function newMessageReceive(message:MessageType):MessageAction {
   };
 }
 
-export function sentMessage(content:string, to:string):Function {
+export function sentMessage(content:string, to:string, type:string):Function {
   let msg = {
     id     : uuid.v1(),
+    type   : type || 'text',
     message: content,//消息内容
     date   : Date.now(),//发送时间
     from   : store.getState().login.userId,//来自谁（id）

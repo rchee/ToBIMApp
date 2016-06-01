@@ -13,6 +13,23 @@ import React, {
 } from 'react-native';
 import NetWorkHelper from '../../../common/NetWorkHelper';
 
+
+class ExpItem extends Component {
+  render() {
+    let expId = this.props.expId;
+    return (
+      <TouchableOpacity
+        style={styles.exp}
+        onPress={()=>this.props.sendExp(expId)}>
+        <Image
+          style={styles.expImg}
+          source={{uri: `${NetWorkHelper.SERVER_ADD}/public/QQexpression/${expId}.gif`}}
+          resizeMode={'contain'}
+        /></TouchableOpacity>
+    );
+  }
+}
+
 class ExpressionChooser extends Component {
 
   static totalExpression = 132;
@@ -53,12 +70,9 @@ class ExpressionChooser extends Component {
       let newRow = [];
       for (let j = 0; j < 7; j++) {
         currExpIndex++;
-        newRow.push(<Image
-          key={currExpIndex}
-          source={{uri: `${NetWorkHelper.SERVER_ADD}/public/QQexpression/${currExpIndex}.gif`}}
-          style={styles.exp}
-          resizeMode={'contain'}
-        />);
+        newRow.push(
+          <ExpItem sendExp={this.props.sendExp} expId={currExpIndex} key={currExpIndex}/>
+        );
       }
       rows.push(<View key={currExpIndex} style={styles.row}>{newRow}</View>);
     }
@@ -69,16 +83,22 @@ class ExpressionChooser extends Component {
 }
 
 var styles = StyleSheet.create({
-  main: {
+  main  : {
     height: 500,
     flex  : 1,
   },
-  row : {
+  row   : {
     flex         : 1,
     alignItems   : 'center',
     flexDirection: 'row'
   },
-  exp : {
+  exp   : {
+    flex     : 1,
+    alignSelf: 'center',
+    height   : 24,
+    width    : 24,
+  },
+  expImg: {
     flex     : 1,
     alignSelf: 'center',
     height   : 24,

@@ -4,7 +4,7 @@ import React, {
   ListView,
   Text,
   TextInput,
-  TouchableOpacity,Platform,
+  TouchableOpacity, Platform,
   ToastAndroid,
   View,
   Image
@@ -20,43 +20,48 @@ class LoginComp extends Component {
 
   constructor(props) {
     super(props);
+    this._uname = 'admin';
+    this._psw = 'admin';
   }
 
   render() {
     let disable = store.getState().login.state == 'checking';
     return (
       <View style={{flex:1}}>
-      <View style={[this.props.style,styles.main]}>
-        <TextInput
-          style={styles.input}
-          editable={!disable}
-          onChangeText={(uname)=>this._uname=uname}
-          placeholder={"用户名"}/>
-        <TextInput
-          editable={!disable}
-          style={styles.input}
-          onChangeText={(pws)=>this._psw=pws}
-          placeholder={"密码"}/>
-        <TouchableOpacity
-          onPress={this._onLogin}
-          style={styles.loginBtn}>
-          <Text
-            style={styles.loginBtnText}>{"登录"}</Text>
-        </TouchableOpacity>
+        <View style={[this.props.style,styles.main]}>
+          <TextInput
+            style={styles.input}
+            editable={!disable}
+            onChangeText={(uname)=>this._uname=uname}
+            defaultValue={this._uname}
+            placeholder={"用户名"}/>
+          <TextInput
+            editable={!disable}
+            style={styles.input}
+            onChangeText={(pws)=>this._psw=pws}
+            defaultValue={this._psw}
+            secureTextEntry={true}
+            placeholder={"密码"}/>
+          <TouchableOpacity
+            onPress={this._onLogin}
+            style={styles.loginBtn}>
+            <Text
+              style={styles.loginBtnText}>{"登录"}</Text>
+          </TouchableOpacity>
+        </View>
+        {(Platform.OS === 'ios') ? <KeyboardSpacer/> : null}
       </View>
-        {(Platform.OS === 'ios')?<KeyboardSpacer/>:null}
-       </View>
     );
   }
 
   _onLogin = ()=> {
     let {_uname, _psw}=this;
     if (_uname === undefined || _psw === undefined) {
-      ToastAndroid.show('请输入完整信息',ToastAndroid.SHORT);
+      ToastAndroid.show('请输入完整信息', ToastAndroid.SHORT);
       return;
     }
     if (_uname === '' || _psw === '') {
-      ToastAndroid.show('请输入完整信息',ToastAndroid.SHORT);
+      ToastAndroid.show('请输入完整信息', ToastAndroid.SHORT);
       return;
     }
     store.dispatch(loginAct(_uname, _psw));
@@ -71,8 +76,8 @@ var styles = StyleSheet.create({
     paddingTop    : -200,
   },
   input       : {
-    width: 300,
-    height:50,
+    width : 300,
+    height: 50,
   },
   loginBtn    : {
     backgroundColor: '#12b7f5',
