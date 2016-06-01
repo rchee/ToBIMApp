@@ -16,10 +16,10 @@ function createUser(num) {
       return _db.collection("users");
     })
     .then(function (col) {
-      let newUsers = [];
-      for (let i = 0; i < num; i++) {
-        let cname = Mock.Random.cname();
-        let newUser = {
+      var newUsers = [];
+      for (var i = 0; i < num; i++) {
+        var cname = Mock.Random.cname();
+        var newUser = {
           user  : Mock.Random.word(),
           pwd   : Mock.Random.word(6, 10),
           name  : cname,

@@ -57,7 +57,7 @@ io.on('connection', function (socket) {
   socket.on('login', function (data, cb) {
     console.log(JSON.stringify(data, 2));
     //TODO 这里为了能在 .then() 中使用 db 而采用了类似全局变量的写法，不知道还有没有更加美观的写法。
-    let db;
+    var db;
     MongoClient.connect(DB_CONN_STR)
       .then(function (_db) {
         db = _db;
@@ -94,7 +94,7 @@ io.on('connection', function (socket) {
 
   socket.on('reLogin', function (data, cb) {
     console.log(JSON.stringify(data, 2));
-    let _db;
+    var _db;
     MongoClient.connect(DB_CONN_STR)
       .then(function (_db) {
         db = _db;
@@ -148,8 +148,8 @@ io.on('connection', function (socket) {
         }));
       })
       .then(users => {
-        let result = users.map(userList => {
-          let user = userList[0];
+        var result = users.map(userList => {
+          var user = userList[0];
           return {
             userId: user._id,
             name  : user.name,
