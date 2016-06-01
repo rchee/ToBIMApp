@@ -7,6 +7,7 @@ import React, {
   View,
   Image
 } from 'react-native';
+import NetWorkHelper from '../../common/NetWorkHelper';
 
 import Mock from 'mockjs';
 import store from './../../store';
@@ -19,6 +20,22 @@ class MessageBobbleComp extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  renderMessageContent() {
+    let {message, sent}  = this.props;
+    switch (message.type) {
+      case 'exp':
+        return <Image
+          source={{uri: `${NetWorkHelper.SERVER_ADD}/public/QQexpression/${message.message}.gif`}}
+          resizeMode={'contain'}
+          style={[styles.exp,sent?styles.horizontallyInverted:undefined]}/>;
+      default:
+        return <Text
+          style={[styles.contentText, sent?styles.selfContentText:styles.empty]}>
+          {message.message || ''}
+        </Text>
+    }
   }
 
   render() {
@@ -36,10 +53,7 @@ class MessageBobbleComp extends Component {
         <Text style={styles.nick}>{this.props.sent ? '' : this.props.nick}</Text>
         <View style={styles.contentWarp}>
           <View style={[styles.content,this.props.sent?styles.selfContent:styles.empty]}>
-            <Text
-              style={[styles.contentText,this.props.sent?styles.selfContentText:styles.empty]}>
-              {this.props.message.message || ''}
-            </Text>
+            {this.renderMessageContent()}
           </View>
         </View>
         <View style={{flex:0}}/>
@@ -117,6 +131,12 @@ var styles = StyleSheet.create({
     ...horizontallyInvertedObj,
   },
   empty               : {},
+  exp                 : {
+    flex     : 1,
+    alignSelf: 'center',
+    height   : 24,
+    width    : 24,
+  }
 });
 
 
