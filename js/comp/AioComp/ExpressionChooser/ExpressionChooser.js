@@ -32,7 +32,7 @@ class ExpItem extends Component {
 
 class ExpressionChooser extends Component {
 
-  static totalExpression = 132;
+  static totalExpression = 22;//132;
 
   static displayExp = 21;
 
